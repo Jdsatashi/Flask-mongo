@@ -1,0 +1,128 @@
+{% extends 'layouts/layout.html' %}
+{% block content %}
+    <div class="container">
+        <div class="col-md-10 offset-1">
+            <div class="d-flex justify-content-center">
+                <div class="card p-1 m-3" id="{{ todos[0]._id }}" style="width: 80%;">
+                    {% if todos[0].completed == "True" %}
+                        <div class="card-header">
+                            <h5>
+                                <del>{{ todos[0].name }}</del>
+                            </h5>
+                        </div>
+                    {% else %}
+                        <div class="card-header">
+                            <h5>{{ todos[0].name }}</h5>
+                        </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <p class="card-text text-muted">{{ todos[0].date_created }}</p>
+                        <p class="card-text">{{ todos[0].description }}</p>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-outline-warning btn-sm" type="button" data-bs-toggle="modal"
+                                data-bs-target="#upd-{{ todos[0]._id }}">
+                            Update
+                        </button>
+                        <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#del-{{ todos[0]._id }}">
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Update -->
+            <div class="modal fade" id="upd-{{ todos[0]._id }}" tabindex="-1" aria-labelledby="updateModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="updateModalLabel">Update Todo</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form method="POST">
+                            {{ form.csrf_token() }}
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    {{ form.name.label(class="form-control-label") }}
+                                    {% if form.name.errors %}
+                                        {{ form.name(class="form-control is-invalid") }}
+                                        {% for error in form.name.errors %}
+                                            <div class="invalid-feedback">
+                                                <span>{{ error }}</span>
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        {{ form.name(class="form-control", value=todos[0].name) }}
+                                    {% endif %}
+                                </div>
+
+                                <div class="form-group">
+                                    {{ form.description.label(class="form-control-label") }}
+                                    {% if form.description.errors %}
+                                        {{ form.description(class="form-control is-invalid") }}
+                                        {% for error in form.description.errors %}
+                                            <div class="invalid-feedback">
+                                                <span>{{ error }}</span>
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        {{ form.description(class="form-control", value=todos[0].description) }}
+                                    {% endif %}
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-control-label" for="#completed">Completed</label>
+                                    {% if form.completed.errors %}
+                                        {{ form.completed(class="form-control is-invalid") }}
+                                        {% for error in form.completed.errors %}
+                                            <div class="invalid-feedback">
+                                                <span>{{ error }}</span>
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <select id="#completed" class="form-control" name="{{ form.completed.name }}">
+                                            <option value="True"
+                                                    {% if todos[0].completed == "True" %}selected{% endif %}>
+                                                True
+                                            </option>
+                                            <option value="False"
+                                                    {% if todos[0].completed == "False" %}selected{% endif %}>
+                                                False
+                                            </option>
+                                        </select>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Confirm Delete -->
+            <div class="modal fade" id="del-{{ todos[0]._id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                 aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Are your sure to delete "<b>{{ todos[0].name }}</b>"</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <a href="{{ url_for('todo_delete', todo_id = todos[0]._id ) }}"
+                               class="btn btn-danger">
+                                Delete
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

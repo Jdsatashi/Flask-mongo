@@ -1,0 +1,29 @@
+{% extends 'layouts/layout.html' %}
+{% block content %}
+    <div class="container">
+        <div class="col-md-10 offset-1">
+            {% for todo in todos %}
+                <div class="d-flex justify-content-center">
+                    <div class="card p-1 m-3" id="{{ todo._id }}" style="width: 80%;">
+                        {% if todo.completed == "True" %}
+                            <div class="card-header">
+                                <h5>
+                                    <del>{{ todo.name }}</del>
+                                </h5>
+                            </div>
+                        {% else %}
+                            <div class="card-header">
+                                <h5>{{ todo.name }}</h5>
+                            </div>
+                        {% endif %}
+                        <div class="card-body">
+                            <p class="card-text text-muted">{{ todo.date_created }}</p>
+                            <p class="card-text">{{ todo.description }}</p>
+                            <a href="{{ '/todo/details/' + todo._id }}">View details</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

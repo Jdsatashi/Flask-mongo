@@ -1,0 +1,64 @@
+{% extends 'layouts/layout.html' %}
+{% block content %}
+    <div class="container">
+        <div class="col-md-6 offset-3">
+            <div class="card mt-lg-4">
+                <div class="card-header">
+                    <h1>This is the add todo.</h1>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {{ form.csrf_token() }}
+                        <fieldset class="form-group">
+                            <div class="form-group">
+                                {{ form.name.label(class="form-control-label") }}
+                                {% if form.name.errors %}
+                                    {{ form.name(class="form-control is-invalid") }}
+                                    {% for error in form.name.errors %}
+                                        <div class="invalid-feedback">
+                                            <span>{{ error }}</span>
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    {{ form.name(class="form-control") }}
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group">
+                                {{ form.description.label(class="form-control-label") }}
+                                {% if form.description.errors %}
+                                    {{ form.description(class="form-control is-invalid") }}
+                                    {% for error in form.description.errors %}
+                                        <div class="invalid-feedback">
+                                            <span>{{ error }}</span>
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    {{ form.description(class="form-control") }}
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group">
+                                {{ form.completed.label(class="form-control-label") }}
+                                {% if form.completed.errors %}
+                                    {{ form.completed(class="form-control is-invalid") }}
+                                    {% for error in form.completed.errors %}
+                                        <div class="invalid-feedback">
+                                            <span>{{ error }}</span>
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    {{ form.completed(class="form-control") }}
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group mt-2">
+                                {{ form.submit(class="btn btn-primary") }}
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
