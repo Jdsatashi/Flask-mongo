@@ -1,22 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
+<head>
+    <meta charset="UTF-8"/>
     <title>
-      {% if title %} Flask - {{title}} {% else %} Flask app {% endif %}
+        {% if title %} Flask - {{ title }} {% else %} Flask app {% endif %}
     </title>
-    <link rel="stylesheet" href="../../static/bootstrap/bootstrap.min.css" />
-  </head>
-  <body>
-    <div id="app">
-      {% include 'layouts/navbar.html' %}
-      <div>{% block content %} {% endblock content %}</div>
-    </div>
-    <script
-      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-      integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
-      crossorigin="anonymous"
-    ></script>
-    <script src="../../static/bootstrap/bootstrap.bundle.min.js"></script>
-  </body>
+    <link rel="stylesheet" href="../../static/bootstrap/bootstrap.min.css"/>
+</head>
+<body>
+<div id="app">
+    {% include 'layouts/navbar.html' %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="container mt-3">
+                <div class="row">
+                    {% for message in messages %}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    {% endwith %}
+    <div>{% block content %} {% endblock content %}</div>
+</div>
+<script
+        src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous"
+></script>
+<script src="../../static/bootstrap/bootstrap.bundle.min.js"></script>
+</body>
 </html>
